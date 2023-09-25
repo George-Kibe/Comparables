@@ -1,13 +1,62 @@
+import React from 'react';
+import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet } from 'react-native';
 
 import { Text, View } from '../../components/Themed';
 
 export default function HomeScreen() {
+  const markers = [
+    {
+      latlng: {
+        latitude: -1.2119,
+        longitude: 36.8888,
+      },
+      title: 'Marker 1',
+      description: 'This is a marker',
+    },
+    {
+      latlng: {
+        latitude: -1.2119,
+        longitude: 36.8888,
+      },
+      title: 'Marker 2',
+      description: 'This is a marker',
+    },
+    {
+      latlng: {
+        latitude: -1.2119,
+        longitude: 36.8888,
+      },
+      title: 'Marker 3',
+      description: 'This is a marker',
+    },
+  ];
+  const onRegionChange = (region) => {
+    console.log(region);
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <Text style={styles.title}>Coming Soon</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <MapView 
+        style={styles.map} 
+        mapType='hybrid'
+        onRegionChange={onRegionChange}
+        initialRegion={{
+          latitude: -1.2119,
+          longitude: 36.8888,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+          {markers.map((marker, index) => (
+            <Marker
+              key={index}
+              coordinate={marker.latlng}
+              title={marker.title}
+              description={marker.description}
+            />
+          ))}
+      </MapView>
     </View>
   );
 }
@@ -18,13 +67,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  map: {
+    width: '100%',
+    height: '100%',
   },
 });
