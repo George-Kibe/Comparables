@@ -3,16 +3,49 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text, View } from '../Themed'
 import { useUserContext } from '../../context/UserContext';
+import generateReferralCode from '../../utils/generateReferralCode';
 
 
 const SetupProfileScreen = () => {
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
-  // const { authUser, reloadDbUser } = useUserContext();
+
+  const { authUser, password, setDbUser } = useUserContext();
+  const clerkUserId = authUser.id;
+  const email = authUser.primaryEmailAddress.emailAddress
+  const referralCode = generateReferralCode();
+
   const saveProfile = async() => {
     // save the user data to a custom database
+    const body = { username:name, bio:about, email, password, clerkUserId, referralCode };
+    console.log("Body: ", body)
+    try {
+      const response = await fetch("https://realhive.vercel.app/api/users", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+      });
+
+      if (response.status === 201) {
+        // refresh state to reflect DB user
+        try {
+          const response = await fetch(`https://realhive.vercel.app/api/users/${email}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json", },
+          },
+          );
+        const userData = await response.json();
+        setDbUser(userData)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    } catch (error) {
+      // Handle errors here
+      console.error("Error:", error);
+    }
   }
- 
+  
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Setup Your Profile</Text>

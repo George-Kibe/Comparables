@@ -82,14 +82,15 @@ function RootLayoutNavWithProps() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const {authUser } = useUserContext();  
-  console.log("Auth User: ", authUser);
+  const {authUser, password, dbUser } = useUserContext();  
+  // console.log("Auth User: ", authUser?.primaryEmailAddress.emailAddress);
+  // console.log("password: ", password)
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <>
         <SignedIn>
-          {!authUser ?(<SetupProfileScreen />):
+          {!dbUser ?(<SetupProfileScreen />):
           (
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
