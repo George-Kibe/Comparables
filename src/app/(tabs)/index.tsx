@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -40,11 +40,12 @@ export default function HomeScreen() {
     <View style={styles.container}> 
       <TouchableOpacity onPress={changeMapType} style={styles.mapToggleButton}>
         <FontAwesome name="map" size={30} color="royalblue" />
-      </TouchableOpacity>   
+      </TouchableOpacity> 
       <MapView 
         style={styles.map} 
         mapType={mapType}
         onRegionChange={onRegionChange}
+        provider={PROVIDER_GOOGLE} 
         initialRegion={{
           latitude: -1.2119,
           longitude: 36.8888,
@@ -58,9 +59,11 @@ export default function HomeScreen() {
             coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
             title={marker.title}
             description={marker.description}
+            pinColor="red"
+            // image={marker.image}
           />
           ))}
-      </MapView>
+      </MapView> 
     </View>
   );
 }
