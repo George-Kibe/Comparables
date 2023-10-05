@@ -29,9 +29,6 @@ const UserContextProvider = ({children}: PropsWithChildren) => {
     useEffect(() => {
      getDBUser()
     }, [authUser])
-
-   console.log("DBUser: ",dbUser)
-
     // const loading = isDbLoading || !isAuthLoaded;
     
     return(

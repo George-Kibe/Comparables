@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useUserContext } from "../../context/UserContext";
  
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -10,13 +11,13 @@ export default function SignUpScreen() {
   const [password, setPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
- 
+  const {setpassword: setContextpassword } = useUserContext()
   // start the sign up process.
   const onSignUpPress = async () => {
     if (!isLoaded) {
       return;
     }
- 
+    setContextpassword(password)
     try {
       await signUp.create({
         emailAddress,

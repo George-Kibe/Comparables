@@ -83,8 +83,6 @@ function RootLayoutNavWithProps() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const {authUser, password, dbUser } = useUserContext();  
-  // console.log("Auth User: ", authUser?.primaryEmailAddress.emailAddress);
-  // console.log("password: ", password)
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

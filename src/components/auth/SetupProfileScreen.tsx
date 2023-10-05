@@ -18,7 +18,7 @@ const SetupProfileScreen = () => {
   const saveProfile = async() => {
     // save the user data to a custom database
     const body = { username:name, bio:about, email, password, clerkUserId, referralCode };
-    console.log("Body: ", body)
+    // console.log("Body: ", body)
     try {
       const response = await fetch("https://realhive.vercel.app/api/users", {
         method: "POST",
