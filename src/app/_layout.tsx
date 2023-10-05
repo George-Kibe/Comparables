@@ -7,6 +7,8 @@ import { useColorScheme } from 'react-native';
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-expo';
 import * as SecureStore from "expo-secure-store";
 import UserContextProvider, { useUserContext } from '../context/UserContext';
+import SetupProfileScreen from '../components/auth/SetupProfileScreen';
+import AuthScreen from '../components/auth/AuthScreen';
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
 console.log("Clerk Key: ", CLERK_PUBLISHABLE_KEY);
@@ -80,15 +82,25 @@ function RootLayoutNavWithProps() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const {authuser } = useUserContext();  
-  console.log("Auth User: ", authuser);
+  const {authUser } = useUserContext();  
+  console.log("Auth User: ", authUser);
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+      <>
+        <SignedIn>
+          {!authUser ?(<SetupProfileScreen />):
+          (
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+            </Stack>
+          )}        
+      </SignedIn>
+      <SignedOut>
+        <AuthScreen />
+      </SignedOut>          
+    </>
     </ThemeProvider>
   );
 }
