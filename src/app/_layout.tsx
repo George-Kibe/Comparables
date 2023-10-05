@@ -4,6 +4,29 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-expo';
+import * as SecureStore from "expo-secure-store";
+import UserContextProvider, { useUserContext } from '../context/UserContext';
+
+const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
+console.log("Clerk Key: ", CLERK_PUBLISHABLE_KEY);
+
+const tokenCache = {
+  getToken(key: string) {
+    try {
+      return SecureStore.getItemAsync(key);
+    } catch (err) {
+      return null;
+    }
+  },
+  saveToken(key: string, value: string) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (err) {
+      return null;
+    }
+  },
+};
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -39,11 +62,26 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return <RootLayoutNavWithProps />;
+}
+
+function RootLayoutNavWithProps() {
+  const colorScheme = useColorScheme();
+  return (
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
+        <UserContextProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <RootLayoutNav />         
+          </ThemeProvider>
+        </UserContextProvider>
+    </ClerkProvider>
+  );
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const {authuser } = useUserContext();  
+  console.log("Auth User: ", authuser);
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
