@@ -1,13 +1,16 @@
 import { StyleSheet } from 'react-native';
 
 import { Text, View } from '../../components/Themed';
+import { useUserContext } from '../../context/UserContext';
 
 export default function ProfileScreen() {
+  const {authuser, dbUser} = useUserContext();
+  // console.log(" DB User: ", dbUser);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <Text style={styles.title}>Coming Soon</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Text style={styles.title}>{dbUser.user.email}</Text>
+      <Text style={styles.title}>{dbUser.user.username}</Text>
     </View>
   );
 }
