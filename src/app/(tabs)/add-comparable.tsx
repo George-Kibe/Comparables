@@ -1,28 +1,49 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import React from 'react'
+import React, { useState } from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useUserContext } from '../../context/UserContext';
+import PrimaryDetails from "../../components/PrimaryDetails";
+import SecondaryDetails from "../../components/SecondaryDetails";
+import CaptureCoords from "../../components/CaptureCoords";
+import SummaryDetails from "../../components/SummaryDetails";
 
 const AddComparable = () => {
+  const [title, setTitle] = useState("");
+  const [lRNumber, setLRNumber] = useState("");
+  const [type, setType] = useState("");
+  const [description, setDescription] = useState("");
+  const [priceType, setPriceType] = useState("");
+  const [price, setPrice] = useState("");
+  const [date, setDate] = useState("");
+  const [images, setImages] = useState([]);
+  const {authuser, dbUser} = useUserContext();
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  console.log(" DB User: ", dbUser);
+  const userId = dbUser?.user._id;
+  const user = dbUser?.user.username;
+  console.log(" User Id: ", userId);
+  console.log("user: ", user)
+
+
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <ProgressSteps>
         <ProgressStep label="Primary Data">
-          <View style={{ alignItems: 'center' }}>
-            <Text>This is the content within step 1!</Text>
-          </View>
+          <PrimaryDetails />
         </ProgressStep>
         <ProgressStep label="Secondary Data ">
-          <View style={{ alignItems: 'center' }}>
-            <Text>This is the content within step 2!</Text>
-          </View>
+          <SecondaryDetails />
         </ProgressStep>
         <ProgressStep label="Capture Map">
-          <View style={{ alignItems: 'center' }}>
-            <Text>This is the content within step 3!</Text>
-          </View>
+          <CaptureCoords />
+        </ProgressStep>
+        <ProgressStep label="Preview">
+          <SummaryDetails />
         </ProgressStep>
       </ProgressSteps>
-  </View>
+  </SafeAreaView>
   )
 }
 

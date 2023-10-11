@@ -54,6 +54,7 @@ export default function TabLayout() {
         name="add-comparable"
         options={{
           title: 'Add Comparable',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="plus" color={color} />,
         }}
       />
